@@ -679,14 +679,6 @@ func loadConfig() (*config, []string, error) {
 	cfg.LNTLSCertPath = cleanAndExpandPath(cfg.LNTLSCertPath)
 	cfg.LNMacaroonPath = cleanAndExpandPath(cfg.LNMacaroonPath)
 
-	// Attempt an early connection to the dcrlnd server and verify if it's a
-	// reasonable server for operations.
-	err = server.CheckDcrlnd(cfg.LNRPCHost, cfg.LNTLSCertPath, cfg.LNMacaroonPath)
-	if err != nil {
-		return nil, nil, fmt.Errorf("error while checking underlying "+
-			"dcrlnd node: %v", err)
-	}
-
 	// Warn about missing config file only after all other configuration is
 	// done.  This prevents the warning on help messages and invalid
 	// options.  Note this should go directly before the return.
