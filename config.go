@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"crypto/tls"
 	_ "embed"
 	"errors"
@@ -164,10 +165,11 @@ type config struct {
 
 // listeners returns the interface listeners where connections to the http
 // server should be accepted.
-func (c *config) listeners() ([]net.Listener, error) {
+func (c *config) listeners(ctx context.Context) ([]net.Listener, error) {
 
 	listenFunc := func(addr string) (net.Listener, error) {
-		return net.Listen("tcp", addr)
+		var lc net.ListenConfig
+		return lc.Listen(ctx, "tcp", addr)
 	}
 
 	if !c.DisableTLS {
